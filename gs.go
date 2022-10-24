@@ -95,7 +95,8 @@ func NewPkGsConfig(hostConfig PkGsHostConfig, vms PkGsVmsConfig) (conf PkGsConfi
 	return
 }
 
-func NewPkGsHostConfig(zfsApi PkGsZfsApi, targetAddress string, targetPort int, templateFile string, vmAutoConf PkVmAutoConfig) (hostConfig PkGsHostConfig) {
+func NewPkGsHostConfig(hostName string, zfsApi PkGsZfsApi, targetAddress string, targetPort int, templateFile string, vmAutoConf PkVmAutoConfig) (hostConfig PkGsHostConfig) {
+	hostConfig.Name = hostName
 	hostConfig.ZfsApi = zfsApi
 	hostConfig.TargetAddress = targetAddress
 	hostConfig.TargetPort = targetPort
