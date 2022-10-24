@@ -85,8 +85,8 @@ type PkGsHostConfig struct {
 }
 
 type PkGsVmsConfig struct {
-	XMLName xml.Name      `xml:"Servers"`
-	Vms     PkVmAdvConfig `xml:"Server"`
+	XMLName xml.Name        `xml:"Servers"`
+	Vms     []PkVmAdvConfig `xml:"Server"`
 }
 
 func NewPkGsConfig(hostConfig PkGsHostConfig, vms PkGsVmsConfig) (conf PkGsConfig) {
