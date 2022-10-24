@@ -8,7 +8,8 @@ import (
 type MemUnit string
 
 const (
-	MemGiB = "GiB"
+	MemGiB MemUnit = "GiB"
+	MemMiB MemUnit = "MiB"
 )
 
 type PkGsConfig struct {
@@ -32,7 +33,7 @@ type PkGsDisk struct {
 }
 
 type PkGsCpuMemConfig struct {
-	Cpu    string `xml:"Cpu"`
+	Cpu    int `xml:"Cpu"`
 	Memory PkVmMemSize
 }
 
@@ -43,6 +44,7 @@ type PkVmMinConfig struct {
 
 type PkVmAutoConfig struct {
 	XMLName xml.Name `xml:"VmAutoconf"`
+	Minimal PkVmMinConfig
 	PkGsCpuMemConfig
 }
 
@@ -60,7 +62,7 @@ type PkVmAdvConfig struct {
 
 type PkVmMemSize struct {
 	XMLName xml.Name `xml:"Memory"`
-	Unit    string   `xml:"unit,attr"`
+	Unit    MemUnit  `xml:"unit,attr"`
 	Size    int      `xml:",chardata"`
 }
 
@@ -122,9 +124,17 @@ func NewPkGsDisk(origin string, prefix string, clone string, systemDisk bool) (d
 	return
 }
 
+func NewPkGsVmAutoConfig(minCpu int, minMem int, maxCpu int, maxMem int, memUnit MemUnit) (vmAutoConf PkVmAutoConfig) {
+	vmAutoConf.Minimal.Cpu = minCpu
+	vmAutoConf.Minimal.Memory = PkVmMemSize{Size: minMem, Unit: memUnit}
+	vmAutoConf.Cpu = maxCpu
+	vmAutoConf.Memory = PkVmMemSize{Size: maxMem, Unit: memUnit}
+	return
+}
+
 func NewPkVm(name string, numCpu int, mem int, memUnit MemUnit, gpuAddr string, ip string) (vm PkVmAdvConfig) {
 	vm.Name = name
-	vm.Cpu = fmt.Sprint(numCpu)
+	vm.Cpu = numCpu
 	vm.Memory = PkVmMemSize{Size: 16, Unit: MemGiB}
 	vm.Gpu = gpuAddr
 	vm.IP = ip
