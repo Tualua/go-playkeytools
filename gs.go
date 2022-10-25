@@ -74,7 +74,7 @@ type PkGsHostConfig struct {
 	TargetAddress   string     `xml:"TargetAddress"`
 	TargetPort      int        `xml:"TargetPort"`
 	RemoteHost      string     `xml:"RemoteHost"`
-	RemotePort      string     `xml:"RemotePort"`
+	RemotePort      int        `xml:"RemotePort"`
 	AdapterName     string     `xml:"AdapterName"`
 	TemplateFile    string     `xml:"TemplateFile"`
 	FilebeatConfig  string     `xml:"FilebeatConfig"`
@@ -95,13 +95,23 @@ func NewPkGsConfig(hostConfig PkGsHostConfig, vms PkGsVmsConfig) (conf PkGsConfi
 	return
 }
 
-func NewPkGsHostConfig(hostName string, zfsApi PkGsZfsApi, targetAddress string, targetPort int, templateFile string, vmAutoConf PkVmAutoConfig) (hostConfig PkGsHostConfig) {
+func NewPkGsHostConfig(hostName string, zfsApi PkGsZfsApi, targetAddress string, targetPort int, templateFile string, vmAutoConf PkVmAutoConfig, hostCpus int, hostMemGiB int) (hostConfig PkGsHostConfig) {
 	hostConfig.Name = hostName
 	hostConfig.ZfsApi = zfsApi
 	hostConfig.TargetAddress = targetAddress
 	hostConfig.TargetPort = targetPort
 	hostConfig.TemplateFile = templateFile
 	hostConfig.VmAutoconf = vmAutoConf
+	hostConfig.PlaykeyApi = "http://api.playkey.net/"
+	hostConfig.RemoteHost = "20.61.216.22"
+	hostConfig.RemotePort = 13001
+	hostConfig.LogstashAddress = "logstash.playkey.net:12122"
+	hostConfig.AdapterName = "NVIDIA GeForce GTX 1080 Ti"
+	hostConfig.FilebeatConfig = "/usr/local/share/GameServer/logstash/filebeat.yml"
+	hostConfig.CopyFolder = "/home/gamer/vms"
+	hostConfig.Cpu = hostCpus
+	hostConfig.Memory.Size = hostMemGiB
+	hostConfig.Memory.Unit = MemGiB
 	return
 }
 
